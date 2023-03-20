@@ -22,29 +22,50 @@ public class App
     public void Run()
     {
         Console.WriteLine("Run Start");
-
-        _workflow.Infrastructure(new[] { @"working", @"completed" });
-        var moved = _workflow.TryMove("Shapes.txt", "working");
-
-        if (!moved)
+        try
         {
-            Console.WriteLine("Error. Please retry later");
-            return;
+            _workflow.Infrastructure(new[] { @"working", @"completed" });
+            var moved = _workflow.TryMove("Shapes.txt", "working");
+
+            if (!moved)
+            {
+                Console.WriteLine("Error. Please retry later");
+                return;
+            }
+
+            var files = _workflow.Pending("working");
+
+            var shapes = _reader.Read(files.FirstOrDefault());
+
+            shapes = _painter.Paint(shapes);
+
+            shapes = _checker.Check(shapes);
+
+            _printer.Print(shapes);
+
+            _workflow.TryMove("working\\Shapes.txt", "completed");
+
+
+            Console.WriteLine("Run End");
+        }
+        catch (DirectoryNotFoundException ex)
+        {
+            Console.WriteLine($"Directory not found: {ex.Message}");
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine($"File not found: {ex.Message}");
         }
 
-        var files = _workflow.Pending("working");
-
-        var shapes = _reader.Read(files.FirstOrDefault());
-
-        shapes = _painter.Paint(shapes);
-
-        shapes = _checker.Check(shapes);
-
-        _printer.Print(shapes);
-
-        _workflow.TryMove("working\\Shapes.txt", "completed");
-
-
-        Console.WriteLine("Run End");
     }
 }
+
+
+
+
+
+
+
+
+
+

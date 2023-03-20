@@ -4,7 +4,8 @@ using ShapeFactory;
 Faker faker = new();
 Painter painter = new(faker);
 
-const string basePath = @"C:\Training\facotry-ires\files";
+const string basePath = @"C:\Users\mohamedlakred\Desktop\mod2\16032023\ESERCIZIO VENERDI\shape-ires\files";
+
 var workflow = new Workflow(basePath);
 
 var reader = new Reader(",");
@@ -24,7 +25,10 @@ static void Welcome() => Console.WriteLine("Welcome to ShapesApp.");
 
 static void Wait()
 {
-    Console.WriteLine("Waiting Input.");
+   
+    
+    
+    //Console.WriteLine("Waiting Input.");
     Console.ReadKey();
     Console.WriteLine("");
 }
